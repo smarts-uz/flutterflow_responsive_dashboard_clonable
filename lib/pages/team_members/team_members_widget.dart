@@ -1,3 +1,4 @@
+import '/backend/supabase/supabase.dart';
 import '/components/main_web_nav/main_web_nav_widget.dart';
 import '/components/message_bottom_sheet/message_bottom_sheet_widget.dart';
 import '/components/mobile_nav/mobile_nav_widget.dart';
@@ -463,99 +464,268 @@ class _TeamMembersWidgetState extends State<TeamMembersWidget> {
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 16.0, 0.0, 0.0),
-                                            child: ListView(
-                                              padding: EdgeInsets.zero,
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.vertical,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 0.0, 2.0),
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          blurRadius: 0.0,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .lineColor,
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
+                                            child: FutureBuilder<
+                                                List<TeamMembersRow>>(
+                                              future:
+                                                  TeamMembersTable().queryRows(
+                                                queryFn: (q) => q,
+                                              ),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50.0,
+                                                      height: 50.0,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                Color>(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    child: Padding(
+                                                  );
+                                                }
+                                                List<TeamMembersRow>
+                                                    listViewTeamMembersRowList =
+                                                    snapshot.data!;
+                                                return ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  itemCount:
+                                                      listViewTeamMembersRowList
+                                                          .length,
+                                                  itemBuilder:
+                                                      (context, listViewIndex) {
+                                                    final listViewTeamMembersRow =
+                                                        listViewTeamMembersRowList[
+                                                            listViewIndex];
+                                                    return Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  2.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryBackground,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              blurRadius: 0.0,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .lineColor,
+                                                              offset: Offset(
+                                                                  0.0, 1.0),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      12.0,
+                                                                      12.0,
+                                                                      12.0,
+                                                                      12.0),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Expanded(
+                                                                flex: 2,
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           0.0,
                                                                           12.0,
                                                                           0.0),
-                                                                  child:
-                                                                      ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            12.0),
-                                                                    child:
-                                                                        CachedNetworkImage(
-                                                                      fadeInDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      fadeOutDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      imageUrl:
-                                                                          'https://picsum.photos/seed/274/600',
-                                                                      width:
-                                                                          40.0,
-                                                                      height:
-                                                                          40.0,
-                                                                      fit: BoxFit
-                                                                          .cover,
+                                                                      child:
+                                                                          ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(12.0),
+                                                                        child:
+                                                                            CachedNetworkImage(
+                                                                          fadeInDuration:
+                                                                              Duration(milliseconds: 500),
+                                                                          fadeOutDuration:
+                                                                              Duration(milliseconds: 500),
+                                                                          imageUrl:
+                                                                              'https://picsum.photos/seed/274/600',
+                                                                          width:
+                                                                              40.0,
+                                                                          height:
+                                                                              40.0,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      ),
                                                                     ),
+                                                                    Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        AutoSizeText(
+                                                                          valueOrDefault<
+                                                                              String>(
+                                                                            listViewTeamMembersRow.name,
+                                                                            'null',
+                                                                          ).maybeHandleOverflow(
+                                                                            maxChars:
+                                                                                32,
+                                                                            replacement:
+                                                                                '…',
+                                                                          ),
+                                                                          style:
+                                                                              FlutterFlowTheme.of(context).titleMedium,
+                                                                        ),
+                                                                        if (responsiveVisibility(
+                                                                          context:
+                                                                              context,
+                                                                          tabletLandscape:
+                                                                              false,
+                                                                          desktop:
+                                                                              false,
+                                                                        ))
+                                                                          Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                2.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            child:
+                                                                                Text(
+                                                                              'user@domainname.com',
+                                                                              style: FlutterFlowTheme.of(context).bodySmall,
+                                                                            ),
+                                                                          ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              if (responsiveVisibility(
+                                                                context:
+                                                                    context,
+                                                                phone: false,
+                                                                tablet: false,
+                                                              ))
+                                                                Expanded(
+                                                                  flex: 2,
+                                                                  child: Text(
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                      listViewTeamMembersRow
+                                                                          .email,
+                                                                      'null',
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium,
                                                                   ),
                                                                 ),
-                                                                Column(
+                                                              if (responsiveVisibility(
+                                                                context:
+                                                                    context,
+                                                                phone: false,
+                                                              ))
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                      dateTimeFormat(
+                                                                        'MEd',
+                                                                        listViewTeamMembersRow
+                                                                            .lastActive,
+                                                                        locale:
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      ),
+                                                                      'not given',
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium,
+                                                                  ),
+                                                                ),
+                                                              if (responsiveVisibility(
+                                                                context:
+                                                                    context,
+                                                                phone: false,
+                                                                tablet: false,
+                                                              ))
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                      dateTimeFormat(
+                                                                        'relative',
+                                                                        listViewTeamMembersRow
+                                                                            .createdAt,
+                                                                        locale:
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      ),
+                                                                      'not given',
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium,
+                                                                  ),
+                                                                ),
+                                                              Expanded(
+                                                                child: Column(
                                                                   mainAxisSize:
                                                                       MainAxisSize
                                                                           .max,
                                                                   crossAxisAlignment:
                                                                       CrossAxisAlignment
-                                                                          .start,
+                                                                          .end,
                                                                   children: [
-                                                                    AutoSizeText(
-                                                                      'Custom Name',
+                                                                    Text(
+                                                                      valueOrDefault<
+                                                                          String>(
+                                                                        listViewTeamMembersRow
+                                                                            .status,
+                                                                        'null',
+                                                                      ),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .titleMedium,
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).primary,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                          ),
                                                                     ),
                                                                     if (responsiveVisibility(
                                                                       context:
                                                                           context,
+                                                                      tablet:
+                                                                          false,
                                                                       tabletLandscape:
                                                                           false,
                                                                       desktop:
@@ -569,1051 +739,32 @@ class _TeamMembersWidgetState extends State<TeamMembersWidget> {
                                                                             0.0),
                                                                         child:
                                                                             Text(
-                                                                          'user@domainname.com',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).bodySmall,
+                                                                          dateTimeFormat(
+                                                                            'relative',
+                                                                            getCurrentTimestamp,
+                                                                            locale:
+                                                                                FFLocalizations.of(context).languageCode,
+                                                                          ),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodySmall
+                                                                              .override(
+                                                                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
+                                                                                color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodySmallFamily),
+                                                                              ),
                                                                         ),
                                                                       ),
                                                                   ],
                                                                 ),
-                                                              ],
-                                                            ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              flex: 2,
-                                                              child: Text(
-                                                                'user@domainname.com',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'MEd',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'relative',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  'Active',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primary,
-                                                                        useGoogleFonts:
-                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                      ),
-                                                                ),
-                                                                if (responsiveVisibility(
-                                                                  context:
-                                                                      context,
-                                                                  tablet: false,
-                                                                  tabletLandscape:
-                                                                      false,
-                                                                  desktop:
-                                                                      false,
-                                                                ))
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                        'relative',
-                                                                        getCurrentTimestamp,
-                                                                        locale:
-                                                                            FFLocalizations.of(context).languageCode,
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodySmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                FlutterFlowTheme.of(context).bodySmallFamily,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            useGoogleFonts:
-                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodySmallFamily),
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 0.0, 2.0),
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          blurRadius: 0.0,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .lineColor,
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          12.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            12.0),
-                                                                    child:
-                                                                        CachedNetworkImage(
-                                                                      fadeInDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      fadeOutDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      imageUrl:
-                                                                          'https://picsum.photos/seed/274/600',
-                                                                      width:
-                                                                          40.0,
-                                                                      height:
-                                                                          40.0,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    AutoSizeText(
-                                                                      'Custom Name',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleMedium,
-                                                                    ),
-                                                                    if (responsiveVisibility(
-                                                                      context:
-                                                                          context,
-                                                                      tabletLandscape:
-                                                                          false,
-                                                                      desktop:
-                                                                          false,
-                                                                    ))
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Text(
-                                                                          'user@domainname.com',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).bodySmall,
-                                                                        ),
-                                                                      ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              flex: 2,
-                                                              child: Text(
-                                                                'user@domainname.com',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'MEd',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'relative',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  'Active',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primary,
-                                                                        useGoogleFonts:
-                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                      ),
-                                                                ),
-                                                                if (responsiveVisibility(
-                                                                  context:
-                                                                      context,
-                                                                  tablet: false,
-                                                                  tabletLandscape:
-                                                                      false,
-                                                                  desktop:
-                                                                      false,
-                                                                ))
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                        'relative',
-                                                                        getCurrentTimestamp,
-                                                                        locale:
-                                                                            FFLocalizations.of(context).languageCode,
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodySmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                FlutterFlowTheme.of(context).bodySmallFamily,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            useGoogleFonts:
-                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodySmallFamily),
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 0.0, 2.0),
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          blurRadius: 0.0,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .lineColor,
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          12.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            12.0),
-                                                                    child:
-                                                                        CachedNetworkImage(
-                                                                      fadeInDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      fadeOutDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      imageUrl:
-                                                                          'https://picsum.photos/seed/274/600',
-                                                                      width:
-                                                                          40.0,
-                                                                      height:
-                                                                          40.0,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    AutoSizeText(
-                                                                      'Custom Name',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleMedium,
-                                                                    ),
-                                                                    if (responsiveVisibility(
-                                                                      context:
-                                                                          context,
-                                                                      tabletLandscape:
-                                                                          false,
-                                                                      desktop:
-                                                                          false,
-                                                                    ))
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Text(
-                                                                          'user@domainname.com',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).bodySmall,
-                                                                        ),
-                                                                      ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              flex: 2,
-                                                              child: Text(
-                                                                'user@domainname.com',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'MEd',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'relative',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  'Active',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primary,
-                                                                        useGoogleFonts:
-                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                      ),
-                                                                ),
-                                                                if (responsiveVisibility(
-                                                                  context:
-                                                                      context,
-                                                                  tablet: false,
-                                                                  tabletLandscape:
-                                                                      false,
-                                                                  desktop:
-                                                                      false,
-                                                                ))
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                        'relative',
-                                                                        getCurrentTimestamp,
-                                                                        locale:
-                                                                            FFLocalizations.of(context).languageCode,
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodySmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                FlutterFlowTheme.of(context).bodySmallFamily,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            useGoogleFonts:
-                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodySmallFamily),
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 0.0, 2.0),
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          blurRadius: 0.0,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .lineColor,
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          12.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            12.0),
-                                                                    child:
-                                                                        CachedNetworkImage(
-                                                                      fadeInDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      fadeOutDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      imageUrl:
-                                                                          'https://picsum.photos/seed/274/600',
-                                                                      width:
-                                                                          40.0,
-                                                                      height:
-                                                                          40.0,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    AutoSizeText(
-                                                                      'Custom Name',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleMedium,
-                                                                    ),
-                                                                    if (responsiveVisibility(
-                                                                      context:
-                                                                          context,
-                                                                      tabletLandscape:
-                                                                          false,
-                                                                      desktop:
-                                                                          false,
-                                                                    ))
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Text(
-                                                                          'user@domainname.com',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).bodySmall,
-                                                                        ),
-                                                                      ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              flex: 2,
-                                                              child: Text(
-                                                                'user@domainname.com',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'MEd',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'relative',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  'Active',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primary,
-                                                                        useGoogleFonts:
-                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                      ),
-                                                                ),
-                                                                if (responsiveVisibility(
-                                                                  context:
-                                                                      context,
-                                                                  tablet: false,
-                                                                  tabletLandscape:
-                                                                      false,
-                                                                  desktop:
-                                                                      false,
-                                                                ))
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                        'relative',
-                                                                        getCurrentTimestamp,
-                                                                        locale:
-                                                                            FFLocalizations.of(context).languageCode,
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodySmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                FlutterFlowTheme.of(context).bodySmallFamily,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            useGoogleFonts:
-                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodySmallFamily),
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 0.0, 2.0),
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          blurRadius: 0.0,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .lineColor,
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          12.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            12.0),
-                                                                    child:
-                                                                        CachedNetworkImage(
-                                                                      fadeInDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      fadeOutDuration:
-                                                                          Duration(
-                                                                              milliseconds: 500),
-                                                                      imageUrl:
-                                                                          'https://picsum.photos/seed/274/600',
-                                                                      width:
-                                                                          40.0,
-                                                                      height:
-                                                                          40.0,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    AutoSizeText(
-                                                                      'Custom Name',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleMedium,
-                                                                    ),
-                                                                    if (responsiveVisibility(
-                                                                      context:
-                                                                          context,
-                                                                      tabletLandscape:
-                                                                          false,
-                                                                      desktop:
-                                                                          false,
-                                                                    ))
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Text(
-                                                                          'user@domainname.com',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).bodySmall,
-                                                                        ),
-                                                                      ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              flex: 2,
-                                                              child: Text(
-                                                                'user@domainname.com',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'MEd',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                          ))
-                                                            Expanded(
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                  'relative',
-                                                                  getCurrentTimestamp,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                              ),
-                                                            ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  'Active',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primary,
-                                                                        useGoogleFonts:
-                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                      ),
-                                                                ),
-                                                                if (responsiveVisibility(
-                                                                  context:
-                                                                      context,
-                                                                  tablet: false,
-                                                                  tabletLandscape:
-                                                                      false,
-                                                                  desktop:
-                                                                      false,
-                                                                ))
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            2.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                        'relative',
-                                                                        getCurrentTimestamp,
-                                                                        locale:
-                                                                            FFLocalizations.of(context).languageCode,
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodySmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                FlutterFlowTheme.of(context).bodySmallFamily,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            useGoogleFonts:
-                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodySmallFamily),
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                                    );
+                                                  },
+                                                );
+                                              },
                                             ),
                                           ),
                                         ],

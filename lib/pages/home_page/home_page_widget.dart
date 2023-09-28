@@ -1,4 +1,3 @@
-import '/backend/backend.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/main_web_nav/main_web_nav_widget.dart';
 import '/components/message_bottom_sheet/message_bottom_sheet_widget.dart';
@@ -8,6 +7,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/random_data_util.dart' as random_data;
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -1650,74 +1650,109 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       ),
                                                 ),
                                               ),
-                                              Container(
-                                                width: double.infinity,
-                                                height: 300.0,
-                                                child: FlutterFlowLineChart(
-                                                  data: [
-                                                    FFLineChartData(
-                                                      xData:
-                                                          chartTransactionsRecordList
-                                                              .map((d) =>
-                                                                  d.dateSpent)
-                                                              .toList(),
-                                                      yData:
-                                                          chartTransactionsRecordList
-                                                              .map((d) =>
-                                                                  d.amount)
-                                                              .toList(),
-                                                      settings:
-                                                          LineChartBarData(
-                                                        color:
+                                              FutureBuilder<
+                                                  List<RecentTransactionsRow>>(
+                                                future:
+                                                    RecentTransactionsTable()
+                                                        .queryRows(
+                                                  queryFn: (q) => q,
+                                                ),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50.0,
+                                                        height: 50.0,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          valueColor:
+                                                              AlwaysStoppedAnimation<
+                                                                  Color>(
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .primary,
-                                                        barWidth: 2.0,
-                                                        isCurved: true,
-                                                        preventCurveOverShooting:
-                                                            true,
-                                                        dotData: FlDotData(
-                                                            show: false),
-                                                        belowBarData:
-                                                            BarAreaData(
-                                                          show: true,
-                                                          color:
-                                                              Color(0x428377F3),
+                                                          ),
                                                         ),
                                                       ),
-                                                    )
-                                                  ],
-                                                  chartStylingInfo:
-                                                      ChartStylingInfo(
-                                                    enableTooltip: true,
-                                                    tooltipBackgroundColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primaryText,
-                                                    backgroundColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .secondaryBackground,
-                                                    showBorder: false,
-                                                  ),
-                                                  axisBounds: AxisBounds(
-                                                    maxY: 500.0,
-                                                  ),
-                                                  xAxisLabelInfo: AxisLabelInfo(
-                                                    title: 'Timeline',
-                                                    titleTextStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodySmall,
-                                                  ),
-                                                  yAxisLabelInfo: AxisLabelInfo(
-                                                    title: 'Spend',
-                                                    titleTextStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodySmall,
-                                                  ),
-                                                ),
+                                                    );
+                                                  }
+                                                  List<RecentTransactionsRow>
+                                                      chartRecentTransactionsRowList =
+                                                      snapshot.data!;
+                                                  return Container(
+                                                    width: double.infinity,
+                                                    height: 300.0,
+                                                    child: FlutterFlowLineChart(
+                                                      data: [
+                                                        FFLineChartData(
+                                                          xData: List.generate(
+                                                              random_data
+                                                                  .randomInteger(
+                                                                      2, 2),
+                                                              (index) => random_data
+                                                                  .randomDate()),
+                                                          yData:
+                                                              chartRecentTransactionsRowList
+                                                                  .map((e) =>
+                                                                      e.price)
+                                                                  .withoutNulls
+                                                                  .toList(),
+                                                          settings:
+                                                              LineChartBarData(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            barWidth: 2.0,
+                                                            isCurved: true,
+                                                            preventCurveOverShooting:
+                                                                true,
+                                                            dotData: FlDotData(
+                                                                show: false),
+                                                            belowBarData:
+                                                                BarAreaData(
+                                                              show: true,
+                                                              color: Color(
+                                                                  0x428377F3),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                      chartStylingInfo:
+                                                          ChartStylingInfo(
+                                                        enableTooltip: true,
+                                                        tooltipBackgroundColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        backgroundColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryBackground,
+                                                        showBorder: false,
+                                                      ),
+                                                      axisBounds: AxisBounds(
+                                                        maxY: 500.0,
+                                                      ),
+                                                      xAxisLabelInfo:
+                                                          AxisLabelInfo(
+                                                        title: 'Timeline',
+                                                        titleTextStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodySmall,
+                                                      ),
+                                                      yAxisLabelInfo:
+                                                          AxisLabelInfo(
+                                                        title: 'Spend',
+                                                        titleTextStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodySmall,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             ],
                                           ),
@@ -1768,61 +1803,107 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 ),
                                           ),
                                         ),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 300.0,
-                                          child: FlutterFlowLineChart(
-                                            data: [
-                                              FFLineChartData(
-                                                xData:
-                                                    chartTransactionsRecordList
-                                                        .map((d) => d.dateSpent)
-                                                        .toList(),
-                                                yData:
-                                                    chartTransactionsRecordList
-                                                        .map((d) => d.amount)
-                                                        .toList(),
-                                                settings: LineChartBarData(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primary,
-                                                  barWidth: 2.0,
-                                                  isCurved: true,
-                                                  preventCurveOverShooting:
-                                                      true,
-                                                  dotData:
-                                                      FlDotData(show: false),
-                                                  belowBarData: BarAreaData(
-                                                    show: true,
-                                                    color: Color(0x428377F3),
+                                        FutureBuilder<
+                                            List<RecentTransactionsRow>>(
+                                          future: RecentTransactionsTable()
+                                              .queryRows(
+                                            queryFn: (q) => q,
+                                          ),
+                                          builder: (context, snapshot) {
+                                            // Customize what your widget looks like when it's loading.
+                                            if (!snapshot.hasData) {
+                                              return Center(
+                                                child: SizedBox(
+                                                  width: 50.0,
+                                                  height: 50.0,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primary,
+                                                    ),
                                                   ),
                                                 ),
-                                              )
-                                            ],
-                                            chartStylingInfo: ChartStylingInfo(
-                                              enableTooltip: true,
-                                              tooltipBackgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryBackground,
-                                              showBorder: false,
-                                            ),
-                                            axisBounds: AxisBounds(),
-                                            xAxisLabelInfo: AxisLabelInfo(
-                                              title: 'Timeline',
-                                              titleTextStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall,
-                                            ),
-                                            yAxisLabelInfo: AxisLabelInfo(
-                                              title: 'Spend',
-                                              titleTextStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall,
-                                            ),
-                                          ),
+                                              );
+                                            }
+                                            List<RecentTransactionsRow>
+                                                chartRecentTransactionsRowList =
+                                                snapshot.data!;
+                                            return Container(
+                                              width: double.infinity,
+                                              height: 300.0,
+                                              child: FlutterFlowLineChart(
+                                                data: [
+                                                  FFLineChartData(
+                                                    xData:
+                                                        chartRecentTransactionsRowList
+                                                            .map((e) =>
+                                                                dateTimeFormat(
+                                                                  'Md',
+                                                                  e.createdAt,
+                                                                  locale: FFLocalizations.of(
+                                                                          context)
+                                                                      .languageCode,
+                                                                ))
+                                                            .toList(),
+                                                    yData:
+                                                        chartRecentTransactionsRowList
+                                                            .map((e) => e.price)
+                                                            .withoutNulls
+                                                            .toList(),
+                                                    settings: LineChartBarData(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
+                                                      barWidth: 2.0,
+                                                      isCurved: true,
+                                                      preventCurveOverShooting:
+                                                          true,
+                                                      dotData: FlDotData(
+                                                          show: false),
+                                                      belowBarData: BarAreaData(
+                                                        show: true,
+                                                        color:
+                                                            Color(0x428377F3),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                                chartStylingInfo:
+                                                    ChartStylingInfo(
+                                                  enableTooltip: true,
+                                                  tooltipBackgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primaryText,
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondaryBackground,
+                                                  showBorder: false,
+                                                ),
+                                                axisBounds: AxisBounds(),
+                                                xAxisLabelInfo: AxisLabelInfo(
+                                                  title: 'Timeline',
+                                                  titleTextStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall,
+                                                ),
+                                                yAxisLabelInfo: AxisLabelInfo(
+                                                  title: 'Spend',
+                                                  titleTextStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall,
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ],
                                     ),
@@ -2031,8 +2112,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               .start,
                                                       children: [
                                                         Text(
-                                                          listViewRecentTransactionsRow
-                                                              .fullName!,
+                                                          valueOrDefault<
+                                                              String>(
+                                                            listViewRecentTransactionsRow
+                                                                .fullName,
+                                                            'null',
+                                                          ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .titleMedium,
@@ -2078,8 +2163,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            listViewRecentTransactionsRow
-                                                                .propertyCoverage!,
+                                                            valueOrDefault<
+                                                                String>(
+                                                              listViewRecentTransactionsRow
+                                                                  .propertyCoverage,
+                                                              'not specified',
+                                                            ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
                                                                 .titleMedium,
@@ -2125,16 +2214,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            formatNumber(
-                                                              listViewRecentTransactionsRow
-                                                                  .price!,
-                                                              formatType:
-                                                                  FormatType
-                                                                      .decimal,
-                                                              decimalType:
-                                                                  DecimalType
-                                                                      .periodDecimal,
-                                                              currency: '\$',
+                                                            valueOrDefault<
+                                                                String>(
+                                                              formatNumber(
+                                                                listViewRecentTransactionsRow
+                                                                    .price,
+                                                                formatType:
+                                                                    FormatType
+                                                                        .decimal,
+                                                                decimalType:
+                                                                    DecimalType
+                                                                        .periodDecimal,
+                                                                currency: '\$',
+                                                              ),
+                                                              '0',
                                                             ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
@@ -2168,14 +2261,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         CrossAxisAlignment.end,
                                                     children: [
                                                       Text(
-                                                        dateTimeFormat(
-                                                          'MMMEd',
-                                                          listViewRecentTransactionsRow
-                                                              .createdAt,
-                                                          locale:
-                                                              FFLocalizations.of(
-                                                                      context)
-                                                                  .languageCode,
+                                                        valueOrDefault<String>(
+                                                          dateTimeFormat(
+                                                            'MMMEd',
+                                                            listViewRecentTransactionsRow
+                                                                .createdAt,
+                                                            locale: FFLocalizations
+                                                                    .of(context)
+                                                                .languageCode,
+                                                          ),
+                                                          'not given',
                                                         ),
                                                         style:
                                                             FlutterFlowTheme.of(

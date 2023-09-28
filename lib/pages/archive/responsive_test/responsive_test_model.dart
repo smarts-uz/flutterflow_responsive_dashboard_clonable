@@ -1,4 +1,3 @@
-import '/backend/backend.dart';
 import '/components/main_web_nav/main_web_nav_widget.dart';
 import '/components/mobile_nav/mobile_nav_widget.dart';
 import '/flutter_flow/flutter_flow_charts.dart';
@@ -6,6 +5,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/random_data_util.dart' as random_data;
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

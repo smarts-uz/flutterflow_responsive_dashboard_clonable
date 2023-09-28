@@ -6,6 +6,7 @@ export 'row.dart';
 export 'table.dart';
 
 export 'tables/courses.dart';
+export 'tables/team_members.dart';
 export 'tables/profiles.dart';
 export 'tables/my_users.dart';
 export 'tables/recent_transactions.dart';
