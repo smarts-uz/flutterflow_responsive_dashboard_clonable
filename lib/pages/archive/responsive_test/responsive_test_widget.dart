@@ -641,97 +641,61 @@ class _ResponsiveTestWidgetState extends State<ResponsiveTestWidget>
                                                 ),
                                           ),
                                         ),
-                                        StreamBuilder<List<TransactionsRecord>>(
-                                          stream: queryTransactionsRecord(),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 50.0,
-                                                  height: 50.0,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
-                                                    ),
+                                        Container(
+                                          width: double.infinity,
+                                          height: 300.0,
+                                          child: FlutterFlowLineChart(
+                                            data: [
+                                              FFLineChartData(
+                                                xData:
+                                                    chartTransactionsRecordList
+                                                        .map((d) => d.dateSpent)
+                                                        .toList(),
+                                                yData:
+                                                    chartTransactionsRecordList
+                                                        .map((d) => d.amount)
+                                                        .toList(),
+                                                settings: LineChartBarData(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
+                                                  barWidth: 2.0,
+                                                  isCurved: true,
+                                                  preventCurveOverShooting:
+                                                      true,
+                                                  dotData:
+                                                      FlDotData(show: false),
+                                                  belowBarData: BarAreaData(
+                                                    show: true,
+                                                    color: Color(0x428377F3),
                                                   ),
                                                 ),
-                                              );
-                                            }
-                                            List<TransactionsRecord>
-                                                chartTransactionsRecordList =
-                                                snapshot.data!;
-                                            return Container(
-                                              width: double.infinity,
-                                              height: 300.0,
-                                              child: FlutterFlowLineChart(
-                                                data: [
-                                                  FFLineChartData(
-                                                    xData:
-                                                        chartTransactionsRecordList
-                                                            .map((d) =>
-                                                                d.dateSpent)
-                                                            .toList(),
-                                                    yData:
-                                                        chartTransactionsRecordList
-                                                            .map(
-                                                                (d) => d.amount)
-                                                            .toList(),
-                                                    settings: LineChartBarData(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                      barWidth: 2.0,
-                                                      isCurved: true,
-                                                      preventCurveOverShooting:
-                                                          true,
-                                                      dotData: FlDotData(
-                                                          show: false),
-                                                      belowBarData: BarAreaData(
-                                                        show: true,
-                                                        color:
-                                                            Color(0x428377F3),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                                chartStylingInfo:
-                                                    ChartStylingInfo(
-                                                  enableTooltip: true,
-                                                  tooltipBackgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primaryText,
-                                                  backgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryBackground,
-                                                  showBorder: false,
-                                                ),
-                                                axisBounds: AxisBounds(),
-                                                xAxisLabelInfo: AxisLabelInfo(
-                                                  title: 'Timeline',
-                                                  titleTextStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodySmall,
-                                                ),
-                                                yAxisLabelInfo: AxisLabelInfo(
-                                                  title: 'Spend',
-                                                  titleTextStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodySmall,
-                                                ),
-                                              ),
-                                            );
-                                          },
+                                              )
+                                            ],
+                                            chartStylingInfo: ChartStylingInfo(
+                                              enableTooltip: true,
+                                              tooltipBackgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              showBorder: false,
+                                            ),
+                                            axisBounds: AxisBounds(),
+                                            xAxisLabelInfo: AxisLabelInfo(
+                                              title: 'Timeline',
+                                              titleTextStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall,
+                                            ),
+                                            yAxisLabelInfo: AxisLabelInfo(
+                                              title: 'Spend',
+                                              titleTextStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),

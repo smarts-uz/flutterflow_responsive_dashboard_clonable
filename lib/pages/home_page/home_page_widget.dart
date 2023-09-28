@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/backend/supabase/supabase.dart';
 import '/components/main_web_nav/main_web_nav_widget.dart';
 import '/components/message_bottom_sheet/message_bottom_sheet_widget.dart';
 import '/components/mobile_nav/mobile_nav_widget.dart';
@@ -1649,109 +1650,74 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       ),
                                                 ),
                                               ),
-                                              StreamBuilder<
-                                                  List<TransactionsRecord>>(
-                                                stream: queryTransactionsRecord(
-                                                  queryBuilder:
-                                                      (transactionsRecord) =>
-                                                          transactionsRecord
-                                                              .orderBy(
-                                                                  'dateSpent'),
-                                                ),
-                                                builder: (context, snapshot) {
-                                                  // Customize what your widget looks like when it's loading.
-                                                  if (!snapshot.hasData) {
-                                                    return Center(
-                                                      child: SizedBox(
-                                                        width: 50.0,
-                                                        height: 50.0,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          valueColor:
-                                                              AlwaysStoppedAnimation<
-                                                                  Color>(
+                                              Container(
+                                                width: double.infinity,
+                                                height: 300.0,
+                                                child: FlutterFlowLineChart(
+                                                  data: [
+                                                    FFLineChartData(
+                                                      xData:
+                                                          chartTransactionsRecordList
+                                                              .map((d) =>
+                                                                  d.dateSpent)
+                                                              .toList(),
+                                                      yData:
+                                                          chartTransactionsRecordList
+                                                              .map((d) =>
+                                                                  d.amount)
+                                                              .toList(),
+                                                      settings:
+                                                          LineChartBarData(
+                                                        color:
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .primary,
-                                                          ),
+                                                        barWidth: 2.0,
+                                                        isCurved: true,
+                                                        preventCurveOverShooting:
+                                                            true,
+                                                        dotData: FlDotData(
+                                                            show: false),
+                                                        belowBarData:
+                                                            BarAreaData(
+                                                          show: true,
+                                                          color:
+                                                              Color(0x428377F3),
                                                         ),
                                                       ),
-                                                    );
-                                                  }
-                                                  List<TransactionsRecord>
-                                                      chartTransactionsRecordList =
-                                                      snapshot.data!;
-                                                  return Container(
-                                                    width: double.infinity,
-                                                    height: 300.0,
-                                                    child: FlutterFlowLineChart(
-                                                      data: [
-                                                        FFLineChartData(
-                                                          xData:
-                                                              chartTransactionsRecordList
-                                                                  .map((d) => d
-                                                                      .dateSpent)
-                                                                  .toList(),
-                                                          yData:
-                                                              chartTransactionsRecordList
-                                                                  .map((d) =>
-                                                                      d.amount)
-                                                                  .toList(),
-                                                          settings:
-                                                              LineChartBarData(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary,
-                                                            barWidth: 2.0,
-                                                            isCurved: true,
-                                                            preventCurveOverShooting:
-                                                                true,
-                                                            dotData: FlDotData(
-                                                                show: false),
-                                                            belowBarData:
-                                                                BarAreaData(
-                                                              show: true,
-                                                              color: Color(
-                                                                  0x428377F3),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                      chartStylingInfo:
-                                                          ChartStylingInfo(
-                                                        enableTooltip: true,
-                                                        tooltipBackgroundColor:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                        backgroundColor:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryBackground,
-                                                        showBorder: false,
-                                                      ),
-                                                      axisBounds: AxisBounds(
-                                                        maxY: 500.0,
-                                                      ),
-                                                      xAxisLabelInfo:
-                                                          AxisLabelInfo(
-                                                        title: 'Timeline',
-                                                        titleTextStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall,
-                                                      ),
-                                                      yAxisLabelInfo:
-                                                          AxisLabelInfo(
-                                                        title: 'Spend',
-                                                        titleTextStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
+                                                    )
+                                                  ],
+                                                  chartStylingInfo:
+                                                      ChartStylingInfo(
+                                                    enableTooltip: true,
+                                                    tooltipBackgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primaryText,
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondaryBackground,
+                                                    showBorder: false,
+                                                  ),
+                                                  axisBounds: AxisBounds(
+                                                    maxY: 500.0,
+                                                  ),
+                                                  xAxisLabelInfo: AxisLabelInfo(
+                                                    title: 'Timeline',
+                                                    titleTextStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall,
+                                                  ),
+                                                  yAxisLabelInfo: AxisLabelInfo(
+                                                    title: 'Spend',
+                                                    titleTextStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall,
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -1802,102 +1768,61 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 ),
                                           ),
                                         ),
-                                        StreamBuilder<List<TransactionsRecord>>(
-                                          stream: queryTransactionsRecord(
-                                            queryBuilder:
-                                                (transactionsRecord) =>
-                                                    transactionsRecord
-                                                        .orderBy('dateSpent'),
-                                          ),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 50.0,
-                                                  height: 50.0,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
-                                                    ),
+                                        Container(
+                                          width: double.infinity,
+                                          height: 300.0,
+                                          child: FlutterFlowLineChart(
+                                            data: [
+                                              FFLineChartData(
+                                                xData:
+                                                    chartTransactionsRecordList
+                                                        .map((d) => d.dateSpent)
+                                                        .toList(),
+                                                yData:
+                                                    chartTransactionsRecordList
+                                                        .map((d) => d.amount)
+                                                        .toList(),
+                                                settings: LineChartBarData(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
+                                                  barWidth: 2.0,
+                                                  isCurved: true,
+                                                  preventCurveOverShooting:
+                                                      true,
+                                                  dotData:
+                                                      FlDotData(show: false),
+                                                  belowBarData: BarAreaData(
+                                                    show: true,
+                                                    color: Color(0x428377F3),
                                                   ),
                                                 ),
-                                              );
-                                            }
-                                            List<TransactionsRecord>
-                                                chartTransactionsRecordList =
-                                                snapshot.data!;
-                                            return Container(
-                                              width: double.infinity,
-                                              height: 300.0,
-                                              child: FlutterFlowLineChart(
-                                                data: [
-                                                  FFLineChartData(
-                                                    xData:
-                                                        chartTransactionsRecordList
-                                                            .map((d) =>
-                                                                d.dateSpent)
-                                                            .toList(),
-                                                    yData:
-                                                        chartTransactionsRecordList
-                                                            .map(
-                                                                (d) => d.amount)
-                                                            .toList(),
-                                                    settings: LineChartBarData(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                      barWidth: 2.0,
-                                                      isCurved: true,
-                                                      preventCurveOverShooting:
-                                                          true,
-                                                      dotData: FlDotData(
-                                                          show: false),
-                                                      belowBarData: BarAreaData(
-                                                        show: true,
-                                                        color:
-                                                            Color(0x428377F3),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                                chartStylingInfo:
-                                                    ChartStylingInfo(
-                                                  enableTooltip: true,
-                                                  tooltipBackgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primaryText,
-                                                  backgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryBackground,
-                                                  showBorder: false,
-                                                ),
-                                                axisBounds: AxisBounds(),
-                                                xAxisLabelInfo: AxisLabelInfo(
-                                                  title: 'Timeline',
-                                                  titleTextStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodySmall,
-                                                ),
-                                                yAxisLabelInfo: AxisLabelInfo(
-                                                  title: 'Spend',
-                                                  titleTextStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodySmall,
-                                                ),
-                                              ),
-                                            );
-                                          },
+                                              )
+                                            ],
+                                            chartStylingInfo: ChartStylingInfo(
+                                              enableTooltip: true,
+                                              tooltipBackgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              showBorder: false,
+                                            ),
+                                            axisBounds: AxisBounds(),
+                                            xAxisLabelInfo: AxisLabelInfo(
+                                              title: 'Timeline',
+                                              titleTextStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall,
+                                            ),
+                                            yAxisLabelInfo: AxisLabelInfo(
+                                              title: 'Spend',
+                                              titleTextStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -2028,275 +1953,230 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 12.0, 16.0, 24.0),
-                                  child: ListView(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 12.0, 0.0, 12.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Container(
-                                              width: 60.0,
-                                              height: 60.0,
-                                              decoration: BoxDecoration(
-                                                color: Color(0x428377F3),
-                                                borderRadius:
-                                                    BorderRadius.circular(16.0),
+                                  child: FutureBuilder<
+                                      List<RecentTransactionsRow>>(
+                                    future: RecentTransactionsTable().queryRows(
+                                      queryFn: (q) => q,
+                                    ),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
                                               ),
-                                              alignment: AlignmentDirectional(
-                                                  0.00, 0.00),
-                                              child: Icon(
-                                                Icons.healing,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      List<RecentTransactionsRow>
+                                          listViewRecentTransactionsRowList =
+                                          snapshot.data!;
+                                      return ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemCount:
+                                            listViewRecentTransactionsRowList
+                                                .length,
+                                        itemBuilder: (context, listViewIndex) {
+                                          final listViewRecentTransactionsRow =
+                                              listViewRecentTransactionsRowList[
+                                                  listViewIndex];
+                                          return Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 12.0, 0.0, 12.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Container(
+                                                  width: 60.0,
+                                                  height: 60.0,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0x428377F3),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16.0),
+                                                  ),
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                          0.00, 0.00),
+                                                  child: Icon(
+                                                    Icons.healing,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
                                                         .primary,
-                                                size: 32.0,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 5,
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        24.0, 0.0, 0.0, 0.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'Insurance',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
+                                                    size: 32.0,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 5,
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(24.0, 0.0,
+                                                                0.0, 0.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          listViewRecentTransactionsRow
+                                                              .fullName!,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
                                                               .titleMedium,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      4.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: Text(
+                                                            'Name',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodySmall,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Padding(
+                                                  ),
+                                                ),
+                                                if (responsiveVisibility(
+                                                  context: context,
+                                                  phone: false,
+                                                ))
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
+                                                                  24.0,
                                                                   0.0,
-                                                                  4.0,
                                                                   0.0,
                                                                   0.0),
-                                                      child: Text(
-                                                        'Property Coverage',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            if (responsiveVisibility(
-                                              context: context,
-                                              phone: false,
-                                            ))
-                                              Expanded(
-                                                flex: 3,
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          24.0, 0.0, 0.0, 0.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Insurance',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            listViewRecentTransactionsRow
+                                                                .propertyCoverage!,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
                                                                 .titleMedium,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        4.0,
+                                                                        0.0,
+                                                                        0.0),
+                                                            child: Text(
+                                                              'Property Coverage',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodySmall,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    4.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          'Property Coverage',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodySmall,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            if (responsiveVisibility(
-                                              context: context,
-                                              phone: false,
-                                            ))
-                                              Expanded(
-                                                flex: 3,
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          24.0, 0.0, 0.0, 0.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Insurance',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleMedium,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    4.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          'Property Coverage',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodySmall,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    'Mon, 4',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleMedium,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 4.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      'Date',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall,
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 12.0, 0.0, 12.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Container(
-                                              width: 60.0,
-                                              height: 60.0,
-                                              decoration: BoxDecoration(
-                                                color: Color(0x51FD6570),
-                                                borderRadius:
-                                                    BorderRadius.circular(16.0),
-                                              ),
-                                              alignment: AlignmentDirectional(
-                                                  0.00, 0.00),
-                                              child: Icon(
-                                                Icons
-                                                    .electrical_services_rounded,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .alternate,
-                                                size: 32.0,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 5,
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        24.0, 0.0, 0.0, 0.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'Insurance',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleMedium,
-                                                    ),
-                                                    Padding(
+                                                if (responsiveVisibility(
+                                                  context: context,
+                                                  phone: false,
+                                                ))
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
+                                                                  24.0,
                                                                   0.0,
-                                                                  4.0,
                                                                   0.0,
                                                                   0.0),
-                                                      child: Text(
-                                                        'Property Coverage',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall,
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            formatNumber(
+                                                              listViewRecentTransactionsRow
+                                                                  .price!,
+                                                              formatType:
+                                                                  FormatType
+                                                                      .decimal,
+                                                              decimalType:
+                                                                  DecimalType
+                                                                      .periodDecimal,
+                                                              currency: '\$',
+                                                            ),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .titleMedium,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        4.0,
+                                                                        0.0,
+                                                                        0.0),
+                                                            child: Text(
+                                                              'Price',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodySmall,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            if (responsiveVisibility(
-                                              context: context,
-                                              phone: false,
-                                            ))
-                                              Expanded(
-                                                flex: 3,
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          24.0, 0.0, 0.0, 0.0),
+                                                  ),
+                                                Expanded(
+                                                  flex: 3,
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                        CrossAxisAlignment.end,
                                                     children: [
                                                       Text(
-                                                        'Insurance',
+                                                        dateTimeFormat(
+                                                          'MMMEd',
+                                                          listViewRecentTransactionsRow
+                                                              .createdAt,
+                                                          locale:
+                                                              FFLocalizations.of(
+                                                                      context)
+                                                                  .languageCode,
+                                                        ),
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -2311,7 +2191,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     0.0,
                                                                     0.0),
                                                         child: Text(
-                                                          'Property Coverage',
+                                                          'Date',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodySmall,
@@ -2320,83 +2200,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     ],
                                                   ),
                                                 ),
-                                              ),
-                                            if (responsiveVisibility(
-                                              context: context,
-                                              phone: false,
-                                            ))
-                                              Expanded(
-                                                flex: 3,
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          24.0, 0.0, 0.0, 0.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Insurance',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleMedium,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    4.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          'Property Coverage',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodySmall,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    'Thu, 9',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleMedium,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 4.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      'Date',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                          );
+                                        },
+                                      );
+                                    },
                                   ),
                                 ),
                               ],

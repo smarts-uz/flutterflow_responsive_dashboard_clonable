@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/backend/supabase/supabase.dart';
 import '/components/main_web_nav/main_web_nav_widget.dart';
 import '/components/message_bottom_sheet/message_bottom_sheet_widget.dart';
 import '/components/mobile_nav/mobile_nav_widget.dart';
